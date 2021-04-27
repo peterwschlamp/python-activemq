@@ -2,7 +2,7 @@
 # run: docker run -p 61613:61613 -p 8161:8161 rmohr/activemq
 # broker (admin - password) 61613 is stomp port
 # activemq admin: http://localhost:8161/admin/ (admin - admin)
-# run this script: python main.py This is a test
+# run this script: python receiver2.py This is a test
 
 
 import time
@@ -20,8 +20,8 @@ class MyListener2(stomp.ConnectionListener):
 print("listening on receiver2", flush=True)
 conn = stomp.Connection([('localhost', 61613)])
 conn.set_listener('', MyListener2())
-conn.connect('admin', 'password', wait=True)
-conn.subscribe(destination='/topic/test', id=1, ack='auto')
+conn.connect('admin', 'password', wait=True, headers = {'client-id': 'receiver2'})
+conn.subscribe(destination='/topic/test', id=1, ack='auto',headers = {'activemq.subscriptionName':'someValue'})
 
 time.sleep(200)
 conn.disconnect()

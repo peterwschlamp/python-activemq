@@ -24,7 +24,7 @@ class MyListener(stomp.ConnectionListener):
 print("listening on main", flush=True)
 conn = stomp.Connection([('localhost', 61613)])
 conn.set_listener('', MyListener())
-conn.connect('admin', 'password', wait=True)
+conn.connect('admin', 'password', wait=True, headers = {'client-id': 'main'})
 #conn.subscribe(destination='/queue/test', id=1, ack='auto')
 conn.subscribe(destination='/topic/test', id=1, ack='auto')
 #conn.send(body=' '.join(sys.argv[1:]), destination='/queue/test')
