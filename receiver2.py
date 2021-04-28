@@ -10,6 +10,7 @@ import sys
 
 import stomp
 
+
 class MyListener2(stomp.ConnectionListener):
     def on_error(self, frame):
         print('received an error "%s"' % frame.body, flush=True)
@@ -17,11 +18,13 @@ class MyListener2(stomp.ConnectionListener):
     def on_message(self, frame):
         print('received a message "%s"' % frame.body, flush=True)
 
+
 print("listening on receiver2", flush=True)
 conn = stomp.Connection([('localhost', 61613)])
 conn.set_listener('', MyListener2())
 conn.connect('admin', 'password', wait=True, headers = {'client-id': 'receiver2'})
-conn.subscribe(destination='/topic/test', id=1, ack='auto',headers = {'activemq.subscriptionName':'someValue'})
+conn.subscribe(destination='/topic/test', id=1, ack='auto',
+               headers={'activemq.subscriptionName':'someValue'})
 
 time.sleep(200)
 conn.disconnect()
